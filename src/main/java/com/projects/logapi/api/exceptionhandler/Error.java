@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 @Getter
@@ -14,7 +14,7 @@ import java.util.List;
 public class Error {
 
     private Integer status;
-    private LocalDateTime localDateTime;
+    private OffsetDateTime localDateTime;
     private String titulo;
     private List<Campo> list;
 
