@@ -25,27 +25,18 @@ public class Entrega {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Valid
     @ManyToOne
-    @NotNull
-    @ConvertGroup(from = Default.class, to = ValidationGroups.ClienteId.class)
     private Cliente cliente;
 
     @Embedded
-    @Valid
     private Destinatario destinatario;
 
-    @NotNull
     private BigDecimal taxa;
 
     @Enumerated(EnumType.STRING)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private StatusEntrega status;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataPedido;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OffsetDateTime dataFinalizacao;
 
 }

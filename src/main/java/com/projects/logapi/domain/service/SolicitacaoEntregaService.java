@@ -1,5 +1,6 @@
 package com.projects.logapi.domain.service;
 
+import com.projects.logapi.api.model.input.EntregaInput;
 import com.projects.logapi.domain.model.Cliente;
 import com.projects.logapi.domain.model.Entrega;
 import com.projects.logapi.domain.model.StatusEntrega;
