@@ -1,9 +1,11 @@
 package com.projects.logapi.domain.model;
+import com.projects.logapi.domain.ValidationGroups;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
@@ -15,6 +17,7 @@ import javax.validation.constraints.Size;
 public class Cliente {
 
     @Id
+    @NotNull(groups = ValidationGroups.ClienteId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include
     private Long id;
