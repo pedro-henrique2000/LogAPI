@@ -1,18 +1,15 @@
 package com.projects.logapi.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.projects.logapi.domain.ValidationGroups;
+import com.projects.logapi.domain.exception.NegocioException;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.ConvertGroup;
-import javax.validation.groups.Default;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -38,5 +35,35 @@ public class Entrega {
 
     private OffsetDateTime dataPedido;
     private OffsetDateTime dataFinalizacao;
+
+    @OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
+    List<Ocorrencia> ocorrencias = new ArrayList<>();
+
+    public Ocorrencia adicionarOcorrencia(String descricao) {
+        Ocorrencia ocorrencia = new Ocorrencia();
+        ocorrencia.setDescricao(descricao);
+        ocorrencia.setEntrega(this);
+        ocorrencia.setDataRegistro(OffsetDateTime.now());
+
+        ocorrencias.add(ocorrencia);
+
+        return ocorrencia;
+    }
+
+    public void finalizar() {
+        if(naoPodeSerFinalizada())
+            throw new NegocioException("Entrega não pode ser finalizada");
+
+        this.setStatus(StatusEntrega.FINALIZADA);
+        this.setDataFinalizacao(OffsetDateTime.now());
+    }
+
+    public boolean podeSerFinalizada() {
+        return StatusEntrega.PENDENTE.equals(this.getStatus());
+    }
+
+    public boolean naoPodeSerFinalizada() {
+        return !podeSerFinalizada();
+    }
 
 }

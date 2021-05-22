@@ -5,6 +5,7 @@ import com.projects.logapi.api.model.EntregaModel;
 import com.projects.logapi.api.model.input.EntregaInput;
 import com.projects.logapi.domain.model.Entrega;
 import com.projects.logapi.domain.repository.EntregaRepository;
+import com.projects.logapi.domain.service.FinalizacaoEntregaService;
 import com.projects.logapi.domain.service.SolicitacaoEntregaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/entregas")
@@ -26,6 +26,9 @@ public class EntregaController {
     EntregaRepository entregaRepository;
 
     @Autowired
+    FinalizacaoEntregaService finalizacaoEntregaService;
+
+    @Autowired
     EntregaAssembler assembler;
 
     @PostMapping
@@ -34,6 +37,12 @@ public class EntregaController {
         Entrega novaEntrega = assembler.toEntity(entrega);
         Entrega solicitada = solicitacaoEntregaService.solicitar(novaEntrega);
         return assembler.toModel(solicitada);
+    }
+
+    @PutMapping("/{entregaId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable Long entregaId) {
+        finalizacaoEntregaService.finalizar(entregaId);
     }
 
     @GetMapping
